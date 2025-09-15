@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cannabis Ops & Business Automation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fdfcfb;
+            color: #3f3f46;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 19px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #e5e7eb;
+        }
+        .timeline-item:last-child::before {
+            height: 40px;
+        }
+        .timeline-marker {
+            position: absolute;
+            left: 10px;
+            top: 24px;
+            width: 20px;
+            height: 20px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 100px;
+            max-height: 120px;
+        }
+        .details-section {
+            transition: all 0.3s ease-in-out;
+            max-height: 0;
+            overflow: hidden;
+        }
+        .details-section.open {
+            max-height: 500px;
+        }
+        .nav-link.active {
+            color: #047857;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-emerald-800">Cannabis Intelligence Hub</h1>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="nav-link text-gray-600 hover:text-emerald-700 transition-colors active">Home</a>
+                <a href="ai-integration-plan.html" class="nav-link text-gray-600 hover:text-emerald-700 transition-colors">AI Integration Plan</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-800">Cannabis Operations & Sales Automation Tool</h1>
+            <p class="mt-2 text-lg text-gray-600">A 6-Month Development Plan</p>
+        </header>
+
+        <main>
+            <section id="overview" class="mb-16">
+                <h2 class="text-2xl font-semibold text-center text-gray-700 mb-2">Project Roadmap</h2>
+                <p class="text-center text-gray-500 max-w-3xl mx-auto mb-6">This chart provides a high-level overview of the project's three phases. Click on any phase to navigate directly to its detailed plan.</p>
+                <div class="chart-container">
+                    <canvas id="timelineChart"></canvas>
+                </div>
+            </section>
+            
+            <section id="timeline" class="mb-16">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-4">Project Timeline</h2>
+                <p class="text-center text-gray-500 max-w-3xl mx-auto mb-12">The project is structured into three distinct two-month phases, moving from foundational data integration to core feature development, and culminating in the deployment of intelligent AI agents. This phased approach ensures a steady, manageable progression towards a comprehensive automation solution.</p>
+                <div id="timeline-container" class="relative">
+                </div>
+            </section>
+
+            <section id="ai-strategy" class="py-12 bg-gray-50 rounded-2xl">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center">
+                        <h2 class="text-3xl font-bold text-gray-800">AI & Automation Strategy</h2>
+                        <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">
+                            The final phase of the project introduces intelligent agents designed to automate key tasks, reduce manual effort, and provide proactive insights. These agents transform the tool from a simple reporting dashboard into an active participant in the business process. Click on each agent to learn more.
+                        </p>
+                    </div>
+                    <div id="ai-agents-container" class="mt-12 grid gap-8 md:grid-cols-1 lg:grid-cols-3">
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="bg-gray-100 border-t mt-12">
+            <div class="container mx-auto px-6 py-4 text-center text-gray-500 text-sm">
+                <p>&copy; 2025 Cannabis Intelligence Hub Project Plan. All Rights Reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const projectData = {
+            phases: [
+                {
+                    id: 'phase-1',
+                    title: 'Phase 1: Foundation & Data Integration',
+                    duration: 'Months 1-2',
+                    goal: 'Establish the core technical infrastructure and create a single source of truth by integrating essential data streams.',
+                    milestone: 'A functional, read-only dashboard displaying live inventory data and METRC compliance status, proving the data pipeline is working end-to-end.',
+                    roles: [
+                        {
+                            name: 'Full-Stack Developer',
+                            tasks: [
+                                'Set up the core application architecture (frontend, backend, database).',
+                                'Implement user authentication and role-based access (Sales, Operations, Finance).',
+                                'Build the initial UI wireframes and a basic, non-interactive dashboard.'
+                            ]
+                        },
+                        {
+                            name: 'Data Engineer',
+                            tasks: [
+                                'Identify and gain access to all key data sources: METRC API, internal inventory system, sales CRM, and accounting software.',
+                                'Design and build the initial data pipelines (ETL/ELT process).',
+                                'Set up a central data warehouse (e.g., Google BigQuery, Snowflake) to store and model the data.'
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 'phase-2',
+                    title: 'Phase 2: Core Feature Development',
+                    duration: 'Months 3-4',
+                    goal: 'Build the primary features that the teams will use for daily operations and reporting.',
+                    milestone: 'An alpha version of the tool is released to a small, internal user group for feedback. The tool can track an order from placement to fulfillment and displays sales and AR data.',
+                    roles: [
+                        {
+                            name: 'Full-Stack Developer',
+                            tasks: [
+                                'Develop an interactive sales reporting dashboard with filters for territory, product, and date ranges.',
+                                'Build the UI for order fulfillment tracking and Accounts Receivable (AR) collection.',
+                                'Integrate a mapping library (e.g., Mapbox) to visualize territory sales data.'
+                            ]
+                        },
+                        {
+                            name: 'Data Engineer',
+                            tasks: [
+                                'Refine data models in the warehouse to optimize them for fast reporting and complex queries.',
+                                'Ensure data from different systems (e.g., an order, its inventory, and its invoice) are correctly linked.',
+                                'Create aggregated data tables to improve the performance of the dashboards.'
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 'phase-3',
+                    title: 'Phase 3: AI Integration & Automation',
+                    duration: 'Months 5-6',
+                    goal: 'Enhance the tool with predictive analytics and intelligent agents to automate decision-making and routine tasks.',
+                    milestone: 'The first AI Agents are deployed and functional. The tool is ready for a company-wide rollout with documentation and user training.',
+                    roles: [
+                        {
+                            name: 'Full-Stack Developer',
+                            tasks: [
+                                'Integrate the AI-driven sales forecast into the dashboard, showing it alongside manual forecasts.',
+                                'Build a robust notification system that will be used by the AI agents to send alerts.',
+                                'Refine the user interface based on feedback from the alpha testers.'
+                            ]
+                        },
+                        {
+                            name: 'Data Engineer',
+                            tasks: [
+                                'Build and train a machine learning model using historical data to generate predictive sales forecasts.',
+                                'Develop data triggers that will activate the AI agents (e.g., an invoice becoming overdue).',
+                                'Structure and prepare data for analysis by the "Market Analyst" agent.'
+                            ]
+                        }
+                    ]
+                }
+            ],
+            aiAgents: [
+                {
+                    name: 'The Compliance Guardian',
+                    icon: '🛡️',
+                    purpose: 'To ensure METRC compliance.',
+                    function: 'When a new order is created, this agent automatically validates it against METRC rules (e.g., quantity limits, valid license). It will instantly flag any non-compliant orders within the tool, alerting the operations team before the product is packed.',
+                    color: 'blue'
+                },
+                {
+                    name: 'The AR Collector',
+                    icon: '💰',
+                    purpose: 'To automate AR collection.',
+                    function: 'When an invoice passes its due date, this agent automatically drafts a reminder email. It can be set to send automatically or queue it for one-click approval by the finance team, streamlining the collection process.',
+                    color: 'green'
+                },
+                {
+                    name: 'Agent for Actionable Intelligence',
+                    icon: '📈',
+                    purpose: 'To deliver automated market insights and actionable intelligence',
+                    function: 'Every week, this agent analyzes sales data to identify significant trends, anomalies, or opportunities (e.g., "Product X sales are up 30% in Territory Y", "Customer Z has missed their typical order cycle", "Inventory Levels - [Low] - itm. #00093234"). It then generates a concise report and sends it to the concerned teams.',
+                    color: 'purple'
+                }
+            ]
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const timelineContainer = document.getElementById('timeline-container');
+            const aiAgentsContainer = document.getElementById('ai-agents-container');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            projectData.phases.forEach((phase, index) => {
+                const phaseElement = document.createElement('div');
+                phaseElement.id = phase.id;
+                phaseElement.className = 'timeline-item relative pl-12 pb-12';
+                
+                let rolesHtml = '';
+                phase.roles.forEach(role => {
+                    rolesHtml += `
+                        <div class="mt-4">
+                            <h5 class="font-semibold text-gray-700">${role.name}</h5>
+                            <ul class="list-disc list-inside mt-2 text-gray-600 space-y-1">
+                                ${role.tasks.map(task => `<li>${task}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                });
+
+                phaseElement.innerHTML = `
+                    <div class="timeline-marker bg-white border-2 border-teal-500 rounded-full"></div>
+                    <div class="pt-5">
+                        <p class="text-sm font-medium text-teal-600">${phase.duration}</p>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-1">${phase.title}</h3>
+                        <p class="mt-2 text-gray-600">${phase.goal}</p>
+                        <div class="mt-6 p-4 bg-teal-50 border-l-4 border-teal-400 rounded-r-lg">
+                            <h4 class="font-semibold text-teal-800">Key Milestone</h4>
+                            <p class="mt-1 text-teal-700">${phase.milestone}</p>
+                        </div>
+                        <div class="mt-4">
+                            <button data-target="details-${index}" class="toggle-details-btn font-medium text-teal-600 hover:text-teal-800 transition">View Details ▼</button>
+                        </div>
+                        <div id="details-${index}" class="details-section mt-4">
+                            ${rolesHtml}
+                        </div>
+                    </div>
+                `;
+                timelineContainer.appendChild(phaseElement);
+            });
+
+            projectData.aiAgents.forEach((agent, index) => {
+                const agentCard = document.createElement('div');
+                agentCard.className = `agent-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer transition transform hover:-translate-y-1`;
+                agentCard.innerHTML = `
+                    <div class="p-8">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 inline-flex items-center justify-center h-12 w-12 rounded-lg bg-${agent.color}-100 text-2xl">
+                                ${agent.icon}
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-semibold text-gray-800">${agent.name}</h4>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-gray-600 font-medium">${agent.purpose}</p>
+                        <div id="agent-details-${index}" class="details-section mt-2 text-gray-500">
+                           <p>${agent.function}</p>
+                        </div>
+                    </div>
+                `;
+                aiAgentsContainer.appendChild(agentCard);
+
+                agentCard.addEventListener('click', () => {
+                    document.getElementById(`agent-details-${index}`).classList.toggle('open');
+                });
+            });
+
+            document.querySelectorAll('.toggle-details-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.getAttribute('data-target');
+                    const detailsSection = document.getElementById(targetId);
+                    const isOpen = detailsSection.classList.toggle('open');
+                    button.textContent = isOpen ? 'Hide Details ▲' : 'View Details ▼';
+                });
+            });
+
+            const ctx = document.getElementById('timelineChart').getContext('2d');
+            const timelineChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: projectData.phases.map(p => p.title.split(':')[0]),
+                    datasets: [{
+                        label: 'Duration (in months)',
+                        data: [2, 2, 2],
+                        backgroundColor: [
+                            'rgba(20, 184, 166, 0.6)',
+                            'rgba(13, 148, 136, 0.7)',
+                            'rgba(15, 118, 110, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(20, 184, 166, 1)',
+                            'rgba(13, 148, 136, 1)',
+                            'rgba(15, 118, 110, 1)'
+                        ],
+                        borderWidth: 1,
+                        barPercentage: 0.8,
+                        categoryPercentage: 0.7
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: true,
+                            callbacks: {
+                                label: function(context) {
+                                    return ' 2 months';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            display: false,
+                            max: 6
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    onClick: (event, elements) => {
+                        if (elements.length > 0) {
+                            const phaseIndex = elements[0].index;
+                            const phaseId = projectData.phases[phaseIndex].id;
+                            document.getElementById(phaseId).scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    }
+                }
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('href') === 'index.html');
+                        });
+                    }
+                });
+            }, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
+
+            observer.observe(document.getElementById('overview'));
+        });
+    </script>
+</body>
+</html>
