@@ -65,6 +65,18 @@
                 <a href="sw-costs.html" class="nav-link text-gray-600 hover:text-emerald-700 transition-colors">SW Costs</a>
 
             </div>
+
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-gray-600 hover:text-emerald-700 focus:outline-none">
+                    <svg id="hamburger-icon" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                    </svg>
+                    <svg id="close-icon" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
         </nav>
     </header>
     
@@ -300,6 +312,18 @@
             
             const dataEngineerTasks = 4 + 3 + 3;
             const fullStackDeveloperTasks = 4 + 4 + 3;
+            // START: Mobile Menu JavaScript
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const hamburgerIcon = document.getElementById('hamburger-icon');
+            const closeIcon = document.getElementById('close-icon');
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                hamburgerIcon.classList.toggle('hidden');
+                closeIcon.classList.toggle('hidden');
+            });
+            // END: Mobile Menu JavaScript
 
             const observerOptions = {
                 root: null,
